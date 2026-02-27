@@ -1,31 +1,63 @@
+import java.util.Scanner;
+
 class Student {
     int rollNo;
     String name;
-    double percentage;
+    double math, science;
 
-
-    Student(int r, String n, double p) {
+    Student(int r, String n, double math, double science) {
         rollNo = r;
         name = n;
-        percentage = p;
+        this.math = math;
+        this.science = science;
     }
 
-
     void displayStudent() {
+        double average = (math + science) / 2;
         System.out.println("Roll No: " + rollNo);
         System.out.println("Name: " + name);
-        System.out.println("Percentage: " + percentage);
+        System.out.println("Average of Math and Science: " + average);
+    }
 
+    static double calculateSubjectAverage(Student[] students) {
+        double totalMath = 0, totalScience = 0;
+        for (Student s : students) {
+            totalMath += s.math;
+            totalScience += s.science;
+        }
+        double avgMath = totalMath / students.length;
+        double avgScience = totalScience / students.length;
+        System.out.println("Average of Math: " + avgMath);
+        System.out.println("Average of Science: " + avgScience);
+        return (avgMath + avgScience) / 2;
     }
 }
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Student[] students = new Student[10];
 
-        Student s1 = new Student(101, "Aarav", 88.5);
-        Student s2 = new Student(102, "Neha", 91.2);
+        for (int i = 0; i < 10; i++) {
+            System.out.print("Enter roll number for student " + (i + 1) + ": ");
+            int rollNo = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Enter name for student " + (i + 1) + ": ");
+            String name = scanner.nextLine();
+            System.out.print("Enter Math marks for student " + (i + 1) + ": ");
+            double math = scanner.nextDouble();
+            System.out.print("Enter Science marks for student " + (i + 1) + ": ");
+            double science = scanner.nextDouble();
+            students[i] = new Student(rollNo, name, math, science);
+        }
 
-        s1.displayStudent();
-        s2.displayStudent();
+        for (Student s : students) {
+            s.displayStudent();
+        }
+
+        double overallSubjectAverage = Student.calculateSubjectAverage(students);
+        System.out.println("Overall average of Math and Science: " + overallSubjectAverage);
+
+        scanner.close();
     }
 }
